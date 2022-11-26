@@ -3,7 +3,7 @@
         <div class="border-2 border-red-600 flex flex-col text-center w-96">
             <div class="flex flex-col text-xl text-blue-700 items-center">
                 <label for="name">¿Cuantas personas van a hacer Match?</label>
-                <countPerson @numberPerson=toUp />
+                <countPerson @numberPerson=goUp />
             </div>
         </div>
     </div>
@@ -16,7 +16,7 @@ import countPerson from './countPerson.vue';
 
 const emits = defineEmits(['numberPerson'])
 
-const toUp = (emit) => {
+const goUp = (emit) => {
     
     emits("numberPerson",emit);
 }
