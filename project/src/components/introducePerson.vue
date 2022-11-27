@@ -24,27 +24,28 @@ let radioButton = ref();
 const props = defineProps({
     maxNumber: {
         type: Number,
-        default: 0,
+        default:2,
     }
 })
 
 let enter = ref();
 
-const emits = defineEmits(['enterPerson', 'aceptSee'])
+const emits = defineEmits(['enterPerson', 'aceptSee','createList'])
 
 const enterPerson = () => {
     
     emits("enterPerson", enter.value,radioButton.value);
 
-    contador.value != props.maxNumber ? contador.value++ : emits("aceptSee", true);
+    if(contador.value != props.maxNumber){
+        contador.value++;
+    }else{
+        emits("createList") ;
+        emits("aceptSee", true);
+        
+    }  
+    console.log(contador.value)
+    console.log(props.maxNumber)
     enter.value = "";
-    
-    
-
 }
 
 </script>
-
-<style lang="scss" scoped>
-
-</style>

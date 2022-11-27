@@ -9,14 +9,14 @@
 <script setup>
 import { ref, watch} from 'vue';
 
-const count = ref(0);
+const count = ref(2);
 
 const countPlus  = ()=>{
     count.value != 20 ? count.value += 2:count.value=count.value;
 };
 
 const countLess  = ()=>{
-    count.value != 0 ? count.value -= 2:count.value=count.value;
+    count.value != 2 ? count.value -= 2:count.value=count.value;
 };
 
 const emits = defineEmits(['numberPerson'])
