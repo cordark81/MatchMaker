@@ -5,14 +5,14 @@
                 <label for="name">Introduzca persona {{ contador }}</label>
                 <input ref="bar" v-model="enter" @keyup.enter="enterPerson" type="text" name="name"
                     class="rounded border mb-2 border-blue-700 w-36 text-center" :disabled="stopEnter">
-                
+
                 <div class="flex items-baseline">
                     <label for="uno">Mujer</label>
-                    <input  class="ml-2" type="radio" id="uno" value="female" name="gender" :checked="resetCheck"
-                        v-model="radioButton" :disabled="stopEnter" @click=this.$refs.bar.focus()>
+                    <input class="ml-2" type="radio" id="uno" value="female" name="gender" v-model="radioButton"
+                        :checked="resetCheckFemale" :disabled="stopEnter">
                     <label class="ml-5" for="Dos">Hombre</label>
-                    <input class="ml-2" type="radio" id="Dos" value="male" name="gender" :checked="resetCheck" v-model="radioButton"
-                        :disabled="stopEnter" @click=this.$refs.bar.focus()>
+                    <input class="ml-2" type="radio" id="Dos" value="male" name="gender" v-model="radioButton"
+                        :checked="resetCheckMale" :disabled="stopEnter">
                 </div>
 
             </div>
@@ -21,12 +21,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 let contador = ref(1);
-let resetCheck = ref();
+let resetCheckFemale = ref();
+let resetCheckMale = ref();
 let radioButton = ref();
 let stopEnter = ref(false);
+const bar = ref(null);
 
 const props = defineProps({
     maxNumber: {
@@ -52,12 +54,24 @@ const enterPerson = () => {
 
     }
     
+    resetCheckFemale.value = false;
+    resetCheckMale.value = false;
     enter.value = "";
-    // funciona solo una vez resetCheck.value = false;
-
     
 }
 
+watch(radioButton, (nv, av) => {
+
+    if (nv == "female") {
+        resetCheckFemale.value = true;
+        bar.value.focus();
+    } else if (nv == "male") {
+        resetCheckMale.value = true;
+        bar.value.focus();
+    }
+});
+
+
 // no funciona para el reset del check const voidCheck = computed(() => resetCheck.value==true?resetCheck.value=false:resetCheck.value=true);
- 
+
 </script>
