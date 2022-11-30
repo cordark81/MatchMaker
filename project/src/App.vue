@@ -11,20 +11,19 @@
       <readFile @load=loadFile />
     </div>
     <div class="flex flex-col items-center" v-show="introPerson">
-      <introducePerson @enterPerson="aceptPerson" :maxNumber=maxPerson @aceptSee=changeButtonSee
-        @createList=photoPerson(listPerson) />
+      <introducePerson @createList=photoPerson :maxNumber=maxPerson @aceptSee=changeButtonSee />
     </div>
     <div class="flex justify-center" v-show="buttonSee">
-      <button @click="pairing(listPerson)" class=" bg-red-500 w-28 h-12 rounded mt-10 hover:bg-red-200"
+      <button @click="pairing" class=" bg-red-500 w-28 h-12 rounded mt-10 hover:bg-red-200"
         :disabled="getPair">Obtener parejas</button>
     </div>
     <div v-show="detailPerson" class="mt-10 ml-10 flex flex-row gap-10 flex-wrap justify-center">
-      <detailsPerson v-for="person in pairingPerson" :name1="person[0].name" :name2="person[1].name"
-        :photo1="person[0].photo" :photo2="person[1].photo" />
+      <detailsPerson v-for="(el,key) in pairingPerson" :key="key" :name1="el[0].name" :name2="el[1].name"
+        :photo1="el[0].photo" :photo2="el[1].photo" />
     </div>
     <div v-show="numeroCorrecto" class="mt-10 ml-10 flex flex-row gap-10 flex-wrap justify-center">
-      <detailsPerson v-for="(el,key) in file" :key="key" :name1="el[0]" :name2="el[1]"
-        :photo1="photo" :photo2="photo" />
+      <detailsPerson v-for="(el, key) in file" :key="key" :name1="el[0]" :name2="el[1]" :photo1="photo"
+        :photo2="photo" />
     </div>
     <h1 v-show="numeroIncorrecto">Lista Impares</h1>
   </div>
@@ -32,11 +31,12 @@
 
 <script setup>
 import axios from "axios";
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import howPerson from './components/howPerson.vue';
 import introducePerson from "./components/introducePerson.vue";
 import detailsPerson from "./components/detailsPerson.vue";
 import readFile from "./components/readFile.vue";
+
 
 let maxPerson = ref();
 let listPerson = ref([]);
@@ -68,14 +68,10 @@ const loadFile = (fil) => {
     numeroIncorrecto.value = true;
     file.value = [];
   }
- 
+
 }
 
-const enterFile = () => {seeFile.value = true;howManyPerson.value=false};
-
-const aceptPerson = (name, gender) => {
-  listPerson.value.push([name, gender]);
-};
+const enterFile = () => { seeFile.value = true; howManyPerson.value = false };
 
 const updatePerson = (number) => maxPerson.value = number;
 
@@ -83,8 +79,9 @@ const addPerson = () => { introPerson.value = true; howManyPerson.value = false 
 
 const photoPerson = async (lista) => {
   let auxArray = [];
+
   try {
-    for (let index = 0; index < listPerson.value.length; index++) {
+    for (let index = 0; index < lista.length; index++) {
 
       const res = await axios.get(`https://randomuser.me/api/?gender=${lista[index][1]}`);
 
@@ -92,18 +89,18 @@ const photoPerson = async (lista) => {
     }
 
     listPerson.value = auxArray;
-    getPair.value = false;
-  } catch (error) {
+  }
+  catch (error) {
     console.log(error);
   }
-
+  getPair.value = false;
 }
 
-const pairing = (list) => {
+const pairing = () => {
 
-  let auxList = list;
-
-  for (let i = 0; i < list.length; i = i + 2) {
+  let auxList = listPerson.value;
+  //intentar resetear parejas!!!!!!!!!!!!!!!!!!!!!!!
+  for (let i = 0; i < listPerson.value.length; i = i + 2) {
 
     let seleccion1 = auxList[Math.floor(Math.random() * auxList.length)];
     auxList = auxList.filter((el) => el.name != seleccion1.name);
@@ -112,7 +109,7 @@ const pairing = (list) => {
     pairingPerson.value.push([seleccion1, seleccion2]);
 
   }
-
+  
   detailPerson.value = true;
   introPerson.value = false;
 }

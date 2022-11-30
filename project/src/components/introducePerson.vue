@@ -1,9 +1,9 @@
 <template>
-    <div class="flex justify-center mt-10">
+    <div class="flex flex-col justify-center mt-10">
         <div class="border-2 border-red-600 flex flex-col text-center w-96">
             <div class="flex flex-col text-xl text-blue-700 items-center">
                 <label for="name">Introduzca persona {{ contador }}</label>
-                <input ref="bar" v-model="enter" @keyup.enter="enterPerson" type="text" name="name"
+                <input ref="bar" v-model="enter" @keyup.enter=checkName(enter,radioButton) type="text" name="name"
                     class="rounded border mb-2 border-blue-700 w-36 text-center" :disabled="stopEnter">
 
                 <div class="flex items-baseline">
@@ -17,6 +17,9 @@
 
             </div>
         </div>
+        <div v-show="warning" class="border-2 border-red-600 mt-10 rounded-full">
+            <h1 class="text-xl text-white text-center text-red-600">El nombre "{{ lastName }}" esta repetido</h1>
+        </div>
     </div>
 </template>
 
@@ -28,36 +31,50 @@ let resetCheckFemale = ref();
 let resetCheckMale = ref();
 let radioButton = ref();
 let stopEnter = ref(false);
+let warning = ref(false);
+let lastName = ref();
+let enter = ref();
+const listPerson = ref([]);
 const bar = ref(null);
+
 
 const props = defineProps({
     maxNumber: {
         type: Number,
         default: 4,
-    }
+    },
 })
 
-let enter = ref();
+const emits = defineEmits(['aceptSee', 'createList']);
 
-const emits = defineEmits(['enterPerson', 'aceptSee', 'createList'])
-
-const enterPerson = () => {
-
-    emits("enterPerson", enter.value, radioButton.value);
-
-    if (contador.value != props.maxNumber) {
+const checkName = (entry,radio) => {
+   
+    if (listPerson.value.length == 0) {
+        listPerson.value.push([entry, radio]);
         contador.value++;
     } else {
-        emits("createList");
-        emits("aceptSee", true);
-        stopEnter.value = true;
+        if (listPerson.value.findIndex((el) => el[0] == entry) == -1&&contador.value != props.maxNumber){
+            listPerson.value.push([entry, radio]);
+            warning.value=false;
+            contador.value++;
+        } else if(listPerson.value.findIndex((el) => el[0] == entry) == -1&&contador.value == props.maxNumber) {
+            listPerson.value.push([entry, radio]);                       
+             emits("createList", listPerson.value);
+            emits("aceptSee", true);
+            stopEnter.value = true;
+            warning.value = false;
+            console.log("fin");
+        } else {
+            lastName.value = enter.value;
+            warning.value = true;
+        }
 
     }
-    
+
     resetCheckFemale.value = false;
     resetCheckMale.value = false;
     enter.value = "";
-    
+    radioButton.value="";
 }
 
 watch(radioButton, (nv, av) => {
@@ -69,9 +86,7 @@ watch(radioButton, (nv, av) => {
         resetCheckMale.value = true;
         bar.value.focus();
     }
-});
+})
 
-
-// no funciona para el reset del check const voidCheck = computed(() => resetCheck.value==true?resetCheck.value=false:resetCheck.value=true);
 
 </script>
