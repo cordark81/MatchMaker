@@ -1,2 +1,3 @@
 # MatchMaker
-# APP para hacer sorteos de personas de manera aleatoria
+# APP para hacer sorteos de personas
+
