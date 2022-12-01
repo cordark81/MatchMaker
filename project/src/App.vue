@@ -1,10 +1,14 @@
 <template>
+  <div class="flex justify-center mt-10">
+    <img src="./assets/1_facebook.jpg" alt="banner" class="w-96 h-52 rounded-full ">
+  </div>
+  <chooseMenu v-show="cMenu" @createList="goList" @forFile="goFile" />
   <div>
     <div v-show="howManyPerson">
       <howPerson @numberPerson=updatePerson />
       <div class="flex flex-row justify-center  mt-10">
-        <button @click="addPerson" class=" bg-red-500 hover:bg-red-200 w-28 h-12 rounded">Aceptar</button>
-        <button @click="enterFile" class="ml-5 bg-red-500 hover:bg-red-200 w-28 h-12 rounded">Por Archivo</button>
+        <button @click="addPerson"
+          class=" bg-amber-700 hover:bg-amber-500 w-28 h-12 rounded text-white shadow-xl">Aceptar</button>
       </div>
     </div>
     <div v-show="seeFile">
@@ -14,11 +18,11 @@
       <introducePerson @createList=photoPerson :maxNumber=maxPerson @aceptSee=changeButtonSee />
     </div>
     <div class="flex justify-center" v-show="buttonSee">
-      <button @click="pairing" class=" bg-red-500 w-28 h-12 rounded mt-10 hover:bg-red-200"
-        :disabled="getPair">Obtener parejas</button>
+      <button @click="pairing" class=" bg-red-500 w-28 h-12 rounded mt-10 hover:bg-red-200" :disabled="getPair">Obtener
+        parejas</button>
     </div>
     <div v-show="detailPerson" class="mt-10 ml-10 flex flex-row gap-10 flex-wrap justify-center">
-      <detailsPerson v-for="(el,key) in pairingPerson" :key="key" :name1="el[0].name" :name2="el[1].name"
+      <detailsPerson v-for="(el, key) in pairingPerson" :key="key" :name1="el[0].name" :name2="el[1].name"
         :photo1="el[0].photo" :photo2="el[1].photo" />
     </div>
     <div v-show="numeroCorrecto" class="mt-10 ml-10 flex flex-row gap-10 flex-wrap justify-center">
@@ -36,12 +40,12 @@ import howPerson from './components/howPerson.vue';
 import introducePerson from "./components/introducePerson.vue";
 import detailsPerson from "./components/detailsPerson.vue";
 import readFile from "./components/readFile.vue";
-
+import chooseMenu from "./components/chooseMenu.vue"
 
 let maxPerson = ref();
 let listPerson = ref([]);
 let introPerson = ref();
-let howManyPerson = ref(true);
+let howManyPerson = ref(false);
 let buttonSee = ref();
 let detailPerson = ref(false);
 let pairingPerson = ref([]);
@@ -50,6 +54,7 @@ let seeFile = ref(false);
 let file = ref([]);
 let numeroIncorrecto = ref(false);
 let numeroCorrecto = ref(false);
+const cMenu = ref(true);
 const photo = ref("https://randomuser.me/api/portraits/women/80.jpg");
 
 const loadFile = (fil) => {
@@ -71,7 +76,9 @@ const loadFile = (fil) => {
 
 }
 
-const enterFile = () => { seeFile.value = true; howManyPerson.value = false };
+const goFile = () => { cMenu.value = false; seeFile.value = true }
+
+const goList = () => { cMenu.value = false; howManyPerson.value = true }
 
 const updatePerson = (number) => maxPerson.value = number;
 
@@ -109,7 +116,7 @@ const pairing = () => {
     pairingPerson.value.push([seleccion1, seleccion2]);
 
   }
-  
+
   detailPerson.value = true;
   introPerson.value = false;
 }

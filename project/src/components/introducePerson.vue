@@ -47,23 +47,22 @@ const props = defineProps({
 
 const emits = defineEmits(['aceptSee', 'createList']);
 
-const checkName = (entry,radio) => {
-   
+const checkName = (entry, radio) => {
+
     if (listPerson.value.length == 0) {
         listPerson.value.push([entry, radio]);
         contador.value++;
     } else {
-        if (listPerson.value.findIndex((el) => el[0] == entry) == -1&&contador.value != props.maxNumber){
+        if (listPerson.value.findIndex((el) => el[0] == entry) == -1 && contador.value != props.maxNumber) {
             listPerson.value.push([entry, radio]);
-            warning.value=false;
+            warning.value = false;
             contador.value++;
-        } else if(listPerson.value.findIndex((el) => el[0] == entry) == -1&&contador.value == props.maxNumber) {
-            listPerson.value.push([entry, radio]);                       
-             emits("createList", listPerson.value);
+        } else if (listPerson.value.findIndex((el) => el[0] == entry) == -1 && contador.value == props.maxNumber) {
+            listPerson.value.push([entry, radio]);
+            emits("createList", listPerson.value);
             emits("aceptSee", true);
             stopEnter.value = true;
             warning.value = false;
-            console.log("fin");
         } else {
             lastName.value = enter.value;
             warning.value = true;
@@ -74,7 +73,7 @@ const checkName = (entry,radio) => {
     resetCheckFemale.value = false;
     resetCheckMale.value = false;
     enter.value = "";
-    radioButton.value="";
+    radioButton.value = "";
 }
 
 watch(radioButton, (nv, av) => {

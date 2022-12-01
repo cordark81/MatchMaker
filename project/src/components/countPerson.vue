@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-row my-5 ">
-        <button @click="countLess" class="mr-5 bg-gray-300 w-8 h-8 rounded">-</button>
+        <button @click="countLess" class="mr-5 bg-slate-400 w-8 h-8 rounded shadow-xl">-</button>
         <h1>{{ count }}</h1>
-        <button @click="countPlus" class="ml-5 bg-gray-300 w-8 h-8 rounded">+</button>
+        <button @click="countPlus" class="ml-5 bg-slate-400 w-8 h-8 rounded shadow-xl">+</button>
     </div>
 </template>
 
