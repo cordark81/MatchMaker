@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col justify-center mt-10">
-        <div class="border-2 border-red-600 flex flex-col text-center w-96">
+        <div class="border-2 border-amber-700 flex flex-col text-center w-96 rounded-xl shadow-xl">
             <div class="flex flex-col text-xl text-blue-700 items-center">
                 <label for="name">Introduzca persona {{ contador }}</label>
                 <input ref="bar" v-model="enter" @keyup.enter=checkName(enter,radioButton) type="text" name="name"
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div v-show="warning" class="border-2 border-red-600 mt-10 rounded-full">
-            <h1 class="text-xl text-white text-center text-red-600">El nombre "{{ lastName }}" esta repetido</h1>
+            <h1 class="text-xl text-center text-red-600">El nombre "{{ lastName }}" esta repetido</h1>
         </div>
     </div>
 </template>

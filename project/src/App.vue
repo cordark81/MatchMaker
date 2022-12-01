@@ -18,7 +18,8 @@
       <introducePerson @createList=photoPerson :maxNumber=maxPerson @aceptSee=changeButtonSee />
     </div>
     <div class="flex justify-center" v-show="buttonSee">
-      <button @click="pairing" class=" bg-red-500 w-28 h-12 rounded mt-10 hover:bg-red-200" :disabled="getPair">Obtener
+      <button @click="pairing" class="mt-10 bg-amber-700 hover:bg-amber-500 w-28 h-12 rounded text-white shadow-xl"
+        :disabled="getPair">Obtener
         parejas</button>
     </div>
     <div v-show="detailPerson" class="mt-10 ml-10 flex flex-row gap-10 flex-wrap justify-center">
@@ -29,13 +30,15 @@
       <detailsPerson v-for="(el, key) in file" :key="key" :name1="el[0]" :name2="el[1]" :photo1="photo"
         :photo2="photo" />
     </div>
-    <h1 v-show="numeroIncorrecto">Lista Impares</h1>
+    <div class="flex justify-center text-blue-700 text-2xl">
+      <h1 v-show="numeroIncorrecto">Lista con participantes Impares</h1>
+    </div>
   </div>
 </template>
 
 <script setup>
 import axios from "axios";
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import howPerson from './components/howPerson.vue';
 import introducePerson from "./components/introducePerson.vue";
 import detailsPerson from "./components/detailsPerson.vue";
@@ -106,7 +109,9 @@ const photoPerson = async (lista) => {
 const pairing = () => {
 
   let auxList = listPerson.value;
+  
   //intentar resetear parejas!!!!!!!!!!!!!!!!!!!!!!!
+  //mejorar metodo !!!!!!!!!!!!!!111
   for (let i = 0; i < listPerson.value.length; i = i + 2) {
 
     let seleccion1 = auxList[Math.floor(Math.random() * auxList.length)];
@@ -116,7 +121,7 @@ const pairing = () => {
     pairingPerson.value.push([seleccion1, seleccion2]);
 
   }
-
+    
   detailPerson.value = true;
   introPerson.value = false;
 }
